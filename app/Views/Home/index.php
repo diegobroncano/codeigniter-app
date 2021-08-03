@@ -1,15 +1,13 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Home index</title>
-</head>
-<body>
+<?= $this->extend('layouts/default'); ?>
 
-	<h1>Hello world</h1>
+<?= $this->section('title'); ?>
+Home
+<?= $this->endSection(); ?>
 
-</body>
-</html>
+<?= $this->section('content'); ?>
+
+<h1>CodeIgniter project home</h1>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum, nibh quis pharetra dapibus, elit urna tincidunt quam, non malesuada tellus sapien ut urna</p>
+
+<?= $this->endSection(); ?>
