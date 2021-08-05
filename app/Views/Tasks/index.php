@@ -1,3 +1,4 @@
+<?php /** @var array $tasks */ ?>
 <?= $this->extend('layouts/default'); ?>
 
 <?= $this->section('title'); ?>Task<?= $this->endSection(); ?>
@@ -10,13 +11,12 @@
 
 	<ul class="task-list">
 
-		<?php /** @var array $tasks */
-		foreach ($tasks as $task): ?>
-
+		<?php foreach ($tasks as $task): ?>
 		<li class="task-item">
-			<?= $task['id'] ?> &middot; <?= $task['description'] ?>
+			<a href="<?= site_url('/tasks/show/'.$task['id']); ?>">
+				<?= $task['id'] ?> &middot; <?= $task['description'] ?>
+			</a>
 		</li>
-
 		<?php endforeach; ?>
 
 	</ul>
