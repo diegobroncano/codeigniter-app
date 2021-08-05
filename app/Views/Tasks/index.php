@@ -21,4 +21,6 @@
 
 	</ul>
 
+	<a href="<?= site_url('/tasks/new') ?>" class="new-task-link">New task</a>
+
 <?= $this->endSection(); ?>

@@ -23,4 +23,24 @@ class Tasks extends BaseController
 
 		return view( "Tasks/show", ['task' => $task] );
 	}
+
+	public function new()
+	{
+		return view("Tasks/new");
+	}
+
+	public function create()
+	{
+		$model = new TaskModel;
+
+		$result = $model->insert( ['description' => $this->request->getPost('description')] );
+
+		if ($result) {
+			return redirect()->to('/tasks')
+				->with('success', ['Task added successfully']);
+		} else {
+			return redirect()->to('/tasks/new')
+				->with('error', $model->errors());
+		}
+	}
 }
