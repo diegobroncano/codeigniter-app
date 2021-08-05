@@ -14,7 +14,7 @@
 		<?php foreach ($tasks as $task): ?>
 		<li class="task-item">
 			<a href="<?= site_url('/tasks/show/'.$task['id']); ?>">
-				<?= $task['id'] ?> &middot; <?= $task['description'] ?>
+				<?= $task['id'] ?> &middot; <?= esc($task['description']); ?>
 			</a>
 		</li>
 		<?php endforeach; ?>
