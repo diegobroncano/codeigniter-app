@@ -13,6 +13,8 @@
 		<?= $this->renderSection('header') ?>
 	</header>
 
+	<?= $this->include('partials/flash-messages') ?>
+
 	<?= $this->renderSection('content'); ?>
 
 </body>
