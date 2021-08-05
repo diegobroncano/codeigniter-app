@@ -3,9 +3,11 @@
 
 <?= $this->section('title'); ?><?= $task['description']; ?><?= $this->endSection(); ?>
 
+<?= $this->section('header-title'); ?><?= $task['description']; ?><?= $this->endSection(); ?>
+
 <?= $this->section('content'); ?>
 
-	<h1><?= $task['description']; ?></h1>
+	<a href="<?= site_url('/tasks'); ?>">&laquo; Back</a>
 
 	<dl>
 		<dt>ID</dt>

@@ -3,9 +3,9 @@
 
 <?= $this->section('title'); ?>Task<?= $this->endSection(); ?>
 
-<?= $this->section('content'); ?>
+<?= $this->section('header-title'); ?>Tasks list<?= $this->endSection(); ?>
 
-	<h1>Tasks list</h1>
+<?= $this->section('content'); ?>
 
 	<p>This is the tasks list:</p>
 

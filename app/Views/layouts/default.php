@@ -8,6 +8,11 @@
 </head>
 <body>
 
+	<header>
+		<h1 class="title"><?= $this->renderSection('header-title') ?></h1>
+		<?= $this->renderSection('header') ?>
+	</header>
+
 	<?= $this->renderSection('content'); ?>
 
 </body>
