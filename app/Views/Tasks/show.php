@@ -23,4 +23,19 @@
 		<dd><?= $task['updated_at']; ?></dd>
 	</dl>
 
+	<h2>Update task: </h2>
+
+	<?= form_open('/tasks/update/'.$task['id']) ?>
+
+		<div>
+			<?= form_label('Description', 'description'); ?>
+			<?= form_input('description', esc($task['description']) , ['id' => 'description']); ?>
+		</div>
+
+		<div>
+			<?= form_submit('save', 'Save'); ?>
+		</div>
+
+	<?= form_close(); ?>
+
 <?= $this->endSection(); ?>

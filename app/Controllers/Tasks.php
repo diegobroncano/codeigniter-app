@@ -15,15 +15,6 @@ class Tasks extends BaseController
 		return view("Tasks/index", ['tasks' => $data_to_view]);
 	}
 
-	public function show($id)
-	{
-		$model = new TaskModel;
-
-		$task = $model->find($id);
-
-		return view( "Tasks/show", ['task' => $task] );
-	}
-
 	public function new()
 	{
 		return view("Tasks/new");
@@ -40,6 +31,30 @@ class Tasks extends BaseController
 				->with('success', ['Task added successfully']);
 		} else {
 			return redirect()->to('/tasks/new')
+				->with('error', $model->errors());
+		}
+	}
+
+	public function show($id)
+	{
+		$model = new TaskModel;
+
+		$task = $model->find($id);
+
+		return view( "Tasks/show", ['task' => $task] );
+	}
+
+	public function update($id)
+	{
+		$model = new TaskModel;
+
+		$result = $model->update( $id, ['description' => $this->request->getPost('description')] );
+
+		if ($result) {
+			return redirect()->to('/tasks/show/'.$id)
+				->with('success', ['Task updated successfully']);
+		} else {
+			return redirect()->to('/tasks/show/'.$id)
 				->with('error', $model->errors());
 		}
 	}
