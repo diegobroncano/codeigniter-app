@@ -17,7 +17,9 @@ class Tasks extends BaseController
 
 	public function new()
 	{
-		return view("Tasks/new");
+		$task = new \App\Entities\Task;
+
+		return view("Tasks/new", ['task' => $task]);
 	}
 
 	public function create()

@@ -8,10 +8,7 @@
 
 	<?= form_open( '/tasks/create'); ?>
 
-		<div>
-			<?= form_label('Description', 'description'); ?>
-			<?= form_input('description',  extra:['id' => 'description']); ?>
-		</div>
+		<?= $this->include('partials/tasks-form-fields') ?>
 
 		<div>
 			<?= form_submit('save', 'Save'); ?>

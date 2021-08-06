@@ -27,10 +27,7 @@
 
 	<?= form_open('/tasks/update/'.$task->id) ?>
 
-		<div>
-			<?= form_label('Description', 'description'); ?>
-			<?= form_input('description', old('description', $task->description) , ['id' => 'description']); ?>
-		</div>
+		<?= $this->include('partials/tasks-form-fields') ?>
 
 		<div>
 			<?= form_submit('save', 'Save'); ?>
