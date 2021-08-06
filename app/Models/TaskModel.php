@@ -11,6 +11,8 @@ class TaskModel extends \CodeIgniter\Model
 
 	protected $useAutoIncrement = true;
 
+	protected $returnType    = 'App\Entities\Task';
+
 	protected $allowedFields = ['description'];
 
 	protected $validationRules    = ['description' => 'required'];

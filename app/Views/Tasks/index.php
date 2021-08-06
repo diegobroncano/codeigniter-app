@@ -13,8 +13,8 @@
 
 		<?php foreach ($tasks as $task): ?>
 		<li class="task-item">
-			<a href="<?= site_url('/tasks/show/'.$task['id']); ?>">
-				<?= $task['id'] ?> &middot; <?= esc($task['description']); ?>
+			<a href="<?= site_url('/tasks/show/'.$task->id); ?>">
+				<?= $task->id ?> &middot; <?= esc($task->description); ?>
 			</a>
 		</li>
 		<?php endforeach; ?>
