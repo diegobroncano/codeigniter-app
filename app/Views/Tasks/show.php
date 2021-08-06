@@ -29,7 +29,7 @@
 
 		<div>
 			<?= form_label('Description', 'description'); ?>
-			<?= form_input('description', esc($task['description']) , ['id' => 'description']); ?>
+			<?= form_input('description', old( 'description', esc($task['description']) ) , ['id' => 'description']); ?>
 		</div>
 
 		<div>

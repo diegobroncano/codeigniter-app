@@ -55,7 +55,8 @@ class Tasks extends BaseController
 				->with('success', ['Task updated successfully']);
 		} else {
 			return redirect()->to('/tasks/show/'.$id)
-				->with('error', $model->errors());
+				->with('error', $model->errors())
+				->withInput();
 		}
 	}
 }
