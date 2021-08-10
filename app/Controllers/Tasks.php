@@ -3,15 +3,20 @@
 
 namespace App\Controllers;
 
-use \App\Models\TaskModel;
 use \App\Entities\Task;
 
 class Tasks extends BaseController
 {
+	private $model;
+
+	public function __construct()
+	{
+		$this->model = new \App\Models\TaskModel;
+	}
+
 	public function index()
 	{
-		$model = new TaskModel;
-		$data_to_view = $model->findAll();
+		$data_to_view = $this->model->findAll();
 
 		return view("Tasks/index", ['tasks' => $data_to_view]);
 	}
@@ -25,42 +30,36 @@ class Tasks extends BaseController
 
 	public function create()
 	{
-		$model = new TaskModel;
-
 		$task = new Task($this->request->getPost());
 
-		if ( $model->insert($task) ) {
+		if ( $this->model->insert($task) ) {
 			return redirect()->to('/tasks')
 				->with('success', ['Task added successfully']);
 		} else {
 			return redirect()->to('/tasks/new')
-				->with('error', $model->errors());
+				->with('error', $this->model->errors());
 		}
 	}
 
 	public function show($id)
 	{
-		$model = new TaskModel;
-
-		$task = $model->find($id);
+		$task = $this->model->find($id);
 
 		return view( "Tasks/show", ['task' => $task] );
 	}
 
 	public function update($id)
 	{
-		$model = new TaskModel;
-
 		$task = new Task($this->request->getPost());
 
 		$task->id = $id;
 
-		if ( $model->save($task) ) {
+		if ( $this->model->save($task) ) {
 			return redirect()->to('/tasks/show/'.$id)
 				->with('success', ['Task updated successfully']);
 		} else {
 			return redirect()->to('/tasks/show/'.$id)
-				->with('error', $model->errors())
+				->with('error', $this->model->errors())
 				->withInput();
 		}
 	}
