@@ -3,32 +3,34 @@
 
 namespace App\Controllers;
 
+use \App\Models\TaskModel;
 use \App\Entities\Task;
+use CodeIgniter\HTTP\RedirectResponse;
 
 class Tasks extends BaseController
 {
-	private $model;
+	private TaskModel $model;
 
 	public function __construct()
 	{
-		$this->model = new \App\Models\TaskModel;
+		$this->model = new TaskModel;
 	}
 
-	public function index()
+	public function index(): string
 	{
 		$data_to_view = $this->model->findAll();
 
 		return view("Tasks/index", ['tasks' => $data_to_view]);
 	}
 
-	public function new()
+	public function new(): string
 	{
 		$task = new Task;
 
 		return view("Tasks/new", ['task' => $task]);
 	}
 
-	public function create()
+	public function create(): RedirectResponse
 	{
 		$task = new Task($this->request->getPost());
 
@@ -41,18 +43,14 @@ class Tasks extends BaseController
 		}
 	}
 
-	public function show($id)
+	public function show($id): string
 	{
-		$task = $this->model->find($id);
-
-		if ( is_null($task) ) {
-			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Task with id $id not found.");
-		}
+		$task = $this->getTaskOr404($id);
 
 		return view( "Tasks/show", ['task' => $task] );
 	}
 
-	public function update($id)
+	public function update($id): RedirectResponse
 	{
 		$task = new Task($this->request->getPost());
 
@@ -66,5 +64,16 @@ class Tasks extends BaseController
 				->with('error', $this->model->errors())
 				->withInput();
 		}
+	}
+
+	protected function getTaskOr404($id): object
+	{
+		$task = $this->model->find($id);
+
+		if ( is_null($task) ) {
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Task with id $id not found.");
+		}
+
+		return $task;
 	}
 }
