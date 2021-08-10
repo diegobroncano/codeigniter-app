@@ -3,7 +3,7 @@
 if (is_null($task->description)) {
 	$description = '';
 } else {
-	$description = esc($task->description);
+	$description = $task->description;
 }
 ?>
 <div>
