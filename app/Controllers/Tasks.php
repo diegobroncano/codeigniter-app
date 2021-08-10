@@ -45,6 +45,10 @@ class Tasks extends BaseController
 	{
 		$task = $this->model->find($id);
 
+		if ( is_null($task) ) {
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Task with id $id not found.");
+		}
+
 		return view( "Tasks/show", ['task' => $task] );
 	}
 
