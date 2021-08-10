@@ -15,6 +15,8 @@ class TaskModel extends \CodeIgniter\Model
 
 	protected $allowedFields = ['description'];
 
+	protected $useTimestamps = true;
+
 	protected $validationRules    = ['description' => 'required'];
 	protected $validationMessages = [
 		'description' => [
