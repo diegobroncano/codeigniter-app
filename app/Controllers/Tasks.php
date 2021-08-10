@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use \App\Models\TaskModel;
+use \App\Entities\Task;
 
 class Tasks extends BaseController
 {
@@ -17,7 +18,7 @@ class Tasks extends BaseController
 
 	public function new()
 	{
-		$task = new \App\Entities\Task;
+		$task = new Task;
 
 		return view("Tasks/new", ['task' => $task]);
 	}
@@ -26,9 +27,9 @@ class Tasks extends BaseController
 	{
 		$model = new TaskModel;
 
-		$result = $model->insert( ['description' => $this->request->getPost('description')] );
+		$task = new Task($this->request->getPost());
 
-		if ($result) {
+		if ( $model->insert($task) ) {
 			return redirect()->to('/tasks')
 				->with('success', ['Task added successfully']);
 		} else {
@@ -50,9 +51,11 @@ class Tasks extends BaseController
 	{
 		$model = new TaskModel;
 
-		$result = $model->update( $id, ['description' => $this->request->getPost('description')] );
+		$task = new Task($this->request->getPost());
 
-		if ($result) {
+		$task->id = $id;
+
+		if ( $model->save($task) ) {
 			return redirect()->to('/tasks/show/'.$id)
 				->with('success', ['Task updated successfully']);
 		} else {
