@@ -66,6 +66,21 @@ class Tasks extends BaseController
 		}
 	}
 
+	public function delete($id): RedirectResponse|string
+	{
+		$task = $this->getTaskOr404($id);
+
+		// If deletion is already confirmed, execute it and redirect to index
+		if ( $this->request->getMethod() === 'post' && $this->request->getPost()['confirmation'] === 'Yes') {
+
+			$this->model->delete($id);
+			return redirect()->to('/tasks')
+				->with('success', ['Task deleted successfully']);
+		}
+
+		return view("Tasks/delete", ['task' => $task]);
+	}
+
 	protected function getTaskOr404($id): object
 	{
 		$task = $this->model->find($id);

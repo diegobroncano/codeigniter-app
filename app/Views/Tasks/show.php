@@ -23,6 +23,8 @@
 		<dd><?= $task->updated_at; ?></dd>
 	</dl>
 
+	<a href="<?= site_url('/tasks/delete/'.$task->id) ?>" class="delete-link">Delete</a>
+
 	<h2>Update task: </h2>
 
 	<?= form_open('/tasks/update/'.$task->id) ?>
