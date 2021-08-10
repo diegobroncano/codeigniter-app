@@ -1,9 +1,9 @@
 <?php /** @var object $task */
 // If $task->description is not defined we need it to be an empty string
-if (is_null($task->description)) {
-	$description = '';
-} else {
+if ($task->description) {
 	$description = $task->description;
+} else {
+	$description = '';
 }
 ?>
 <div>
