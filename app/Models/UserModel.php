@@ -42,9 +42,9 @@ class UserModel extends \CodeIgniter\Model
 		]
 	];
 
-		protected $beforeInsert = ['hashPassword'];
+	protected $beforeInsert = ['hashPassword'];
 
-	protected function hashPassword(array $data)
+	protected function hashPassword(array $data): array
 	{
 		if ( isset($data['data']['password']) ) {
 
@@ -55,5 +55,11 @@ class UserModel extends \CodeIgniter\Model
 		}
 
 		return $data;
+	}
+
+	public function findByEmail(string $email): ?object
+	{
+		return $this->where('email', $email)
+			->first();
 	}
 }
