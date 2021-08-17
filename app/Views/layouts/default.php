@@ -9,9 +9,12 @@
 <body>
 
 	<header>
-		<h1 class="title"><?= $this->renderSection('header-title') ?></h1>
+		<h2 class="site-title"><a href="<?= site_url() ?>">CodeIgniter app</a></h2>
+		<?= $this->include('partials/menu') ?>
 		<?= $this->renderSection('header') ?>
 	</header>
+
+	<h1 class="title"><?= $this->renderSection('header-title') ?></h1>
 
 	<?= $this->include('partials/flash-messages') ?>
 
