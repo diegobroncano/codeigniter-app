@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\GuestFilter;
 use App\Filters\LoginFilter;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
@@ -20,7 +21,8 @@ class Filters extends BaseConfig
 		'csrf'		=> CSRF::class,
 		'toolbar'	=> DebugToolbar::class,
 		'honeypot'	=> Honeypot::class,
-		'login'		=> LoginFilter::class
+		'login'		=> LoginFilter::class,
+		'guest'		=> GuestFilter::class
 	];
 
 	/**
@@ -61,6 +63,7 @@ class Filters extends BaseConfig
 	 * @var array
 	 */
 	public $filters = [
-		'login'	=> ['before' => ['tasks(/*)?']]
+		'login'	=> ['before' => ['tasks(/*)?']],
+		'guest'	=> ['before' => ['login(/*)?', 'signup(/*)?']]
 	];
 }
