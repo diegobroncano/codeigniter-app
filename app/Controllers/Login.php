@@ -18,7 +18,7 @@ class Login extends BaseController
 		$password = $this->request->getPost('password');
 
 		if ( service('auth')->login($email, $password) ) {
-			return redirect()->to('/')
+			return redirect()->to( $this->getRedirectUrl() )
 					->with('success', ["Welcome " . current_user()->name]);
 		} else {
 			return redirect()->to('/login')
@@ -37,5 +37,17 @@ class Login extends BaseController
 	{
 		return redirect()->to('/')
 			->with('info', ['You have logged out.']);
+	}
+
+	/**
+	 * Return and unset redirect url from session.
+	 *
+	 * @return string Redirect url
+	 */
+	protected function getRedirectUrl(): string
+	{
+		$redirect_url = session('redirect_url') ?? site_url();
+		session()->remove('redirect_url');
+		return $redirect_url;
 	}
 }
