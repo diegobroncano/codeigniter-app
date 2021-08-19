@@ -7,19 +7,27 @@
 
 <?= $this->section('content'); ?>
 
-	<p>This is the tasks list:</p>
+	<?php if ($tasks): ?>
 
-	<ul class="task-list">
+		<p>This is the tasks list:</p>
 
-		<?php foreach ($tasks as $task): ?>
-		<li class="task-item">
-			<a href="<?= site_url('/tasks/show/'.$task->id); ?>">
-				<?= $task->id ?> &middot; <?= $task->description; ?>
-			</a>
-		</li>
-		<?php endforeach; ?>
+		<ul class="task-list">
 
-	</ul>
+			<?php foreach ($tasks as $task): ?>
+			<li class="task-item">
+				<a href="<?= site_url('/tasks/show/'.$task->id); ?>">
+					<?= $task->id ?> &middot; <?= $task->description; ?>
+				</a>
+			</li>
+			<?php endforeach; ?>
+
+		</ul>
+
+	<?php else: ?>
+
+		<p class="no-tasks">No tasks found.</p>
+
+	<?php endif; ?>
 
 	<a href="<?= site_url('/tasks/new') ?>" class="new-task-link">New task</a>
 

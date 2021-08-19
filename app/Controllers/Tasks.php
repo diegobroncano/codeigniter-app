@@ -3,6 +3,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\User;
 use \App\Models\TaskModel;
 use \App\Entities\Task;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -11,16 +12,19 @@ class Tasks extends BaseController
 {
 	private TaskModel $model;
 
+	private User $current_user;
+
 	public function __construct()
 	{
 		$this->model = new TaskModel;
+		$this->current_user = service('auth')->getCurrentUser();
 	}
 
 	public function index(): string
 	{
-		$data_to_view = $this->model->findAll();
+		$tasks = $this->model->getTasksByUserId($this->current_user->id);
 
-		return view("Tasks/index", ['tasks' => $data_to_view]);
+		return view("Tasks/index", ['tasks' => $tasks]);
 	}
 
 	public function new(): string
@@ -33,6 +37,9 @@ class Tasks extends BaseController
 	public function create(): RedirectResponse
 	{
 		$task = new Task($this->request->getPost());
+
+		// Add user ID
+		$task->user_id = $this->current_user->id;
 
 		if ( $this->model->insert($task) ) {
 			return redirect()->to('/tasks')
@@ -52,7 +59,12 @@ class Tasks extends BaseController
 
 	public function update($id): RedirectResponse
 	{
-		$task = new Task($this->request->getPost());
+		$post = $this->request->getPost();
+
+		// Remove any user_id submitted by an attacker.
+		unset($post['user_id']);
+
+		$task = new Task($post);
 
 		$task->id = $id;
 
@@ -83,7 +95,7 @@ class Tasks extends BaseController
 
 	protected function getTaskOr404($id): object
 	{
-		$task = $this->model->find($id);
+		$task = $this->model->getTaskWithUser($id, $this->current_user->id);
 
 		if ( is_null($task) ) {
 			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Task with id $id not found.");
