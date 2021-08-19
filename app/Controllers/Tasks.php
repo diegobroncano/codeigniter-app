@@ -22,9 +22,12 @@ class Tasks extends BaseController
 
 	public function index(): string
 	{
-		$tasks = $this->model->getTasksByUserId($this->current_user->id);
+		$tasks = $this->model->paginateTasksByUserId($this->current_user->id);
 
-		return view("Tasks/index", ['tasks' => $tasks]);
+		return view("Tasks/index", [
+			'tasks'	=> $tasks,
+			'pager'	=> $this->model->pager
+		]);
 	}
 
 	public function new(): string

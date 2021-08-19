@@ -1,4 +1,7 @@
-<?php /** @var array $tasks */ ?>
+<?php
+/** @var array $tasks */
+/** @var \CodeIgniter\Pager\Pager $pager */
+?>
 <?= $this->extend('layouts/default'); ?>
 
 <?= $this->section('title'); ?>Task<?= $this->endSection(); ?>
@@ -22,6 +25,8 @@
 			<?php endforeach; ?>
 
 		</ul>
+
+		<?= $pager->links(); ?>
 
 	<?php else: ?>
 

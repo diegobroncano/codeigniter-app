@@ -25,17 +25,17 @@ class TaskModel extends \CodeIgniter\Model
 	];
 
 	/**
-	 * Search in database all recorded tasks assigned to a user.
+	 * Search and paginate all recorded tasks assigned to a user.
 	 *
 	 * @param int $id User ID
 	 *
-	 * @return array User's tasks
+	 * @return array User's tasks paginated
 	 */
-	public function getTasksByUserId(int $id): array
+	public function paginateTasksByUserId(int $id): array
 	{
 		return $this->where('user_id', $id)
 			->orderBy('created_at')
-			->findAll();
+			->paginate();
 	}
 
 	public function getTaskWithUser(int $task_id, int $user_id): ?object
