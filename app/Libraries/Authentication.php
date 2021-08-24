@@ -35,15 +35,20 @@ class Authentication
 			return false;
 		}
 
-		if ( $user->verifyPassword($password) ) {
-			$session = session();
-			$session->regenerate();
-			$session->user_id = $user->id;
-
-			return true;
-		} else {
+		if ( !$user->verifyPassword($password) ) {
 			return false;
 		}
+
+		if ( !$user->is_active ) {
+			session()->setFlashdata('account_activated', false);
+			return false;
+		}
+
+		$session = session();
+		$session->regenerate();
+		$session->user_id = $user->id;
+
+		return true;
 	}
 
 	/**

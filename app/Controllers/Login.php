@@ -21,9 +21,17 @@ class Login extends BaseController
 			return redirect()->to( $this->getRedirectUrl() )
 					->with('success', ["Welcome " . current_user()->name]);
 		} else {
+
+			if ( !session()->getFlashdata('account_activated') ) {
+				return redirect()->to('/login')
+				->with('error', ['Your account is not activated, please check your inbox.'])
+				->withInput();
+			}
+
 			return redirect()->to('/login')
 				->with('error', ['Email and password combination don\'t match.'])
 				->withInput();
+
 		}
 	}
 
