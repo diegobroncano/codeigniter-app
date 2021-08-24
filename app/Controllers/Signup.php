@@ -15,6 +15,7 @@ class Signup extends BaseController
 	public function create()
 	{
 		$user = new User($this->request->getPost());
+		$user->startActivation();
 
 		$model = new UserModel();
 
