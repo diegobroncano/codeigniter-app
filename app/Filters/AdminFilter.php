@@ -6,19 +6,18 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class LoginFilter implements \CodeIgniter\Filters\FilterInterface
+class AdminFilter implements \CodeIgniter\Filters\FilterInterface
 {
 	/**
 	 * @inheritDoc
 	 */
 	public function before(RequestInterface $request, $arguments = null)
 	{
-		if ( !service('auth')->isLoggedIn() ) {
+		if ( !service('auth')->currentAdmin() ) {
 
-			session()->set( 'redirect_url', current_url() );
+			return redirect()->back()
+				->with('error', 'You do not have permission to see that.');
 
-			return redirect()->to('/login')
-				->with('error', ['You must be logged in.']);
 		}
 	}
 

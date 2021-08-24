@@ -9,6 +9,16 @@ class Authentication
 {
 	private object $user;
 
+	private array $roles;
+
+	public function __construct()
+	{
+		$this->roles = array(
+			'admin' => 'Administrator',
+			'subscriber' => 'Subscriber'
+		);
+	}
+
 	/**
 	 * Log user into app given its credentials.
 	 *
@@ -68,5 +78,23 @@ class Authentication
 	public function isLoggedIn(): bool
 	{
 		return session()->has('user_id');
+	}
+
+	/**
+	 * Check if current user has an admin role.
+	 *
+	 * @return bool
+	 */
+	public function currentAdmin(): bool
+	{
+		if ( $this->isLoggedIn() ) {
+			return $this->getCurrentUser()->role === 'admin';
+		}
+		return false;
+ 	}
+
+ 	public function getRoles(): array
+	{
+		return $this->roles;
 	}
 }
