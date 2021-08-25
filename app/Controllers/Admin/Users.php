@@ -72,7 +72,7 @@ class Users extends \App\Controllers\BaseController
 
 		$user->fill( $this->request->getPost() );
 
-		if ( !$user->hasChanged('email') && !$user->hasChanged('name') && !$user->hasChanged('last_name') && !$user->hasChanged('role') ) {
+		if ( !$user->hasChanged('email') && !$user->hasChanged('name') && !$user->hasChanged('last_name') && !$user->hasChanged('role') && !$user->hasChanged('is_active') ) {
 			return redirect()->to('admin/users/show/'.$id)
 				->with('warning', 'Nothing to update.');
 		}

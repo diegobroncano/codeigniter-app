@@ -34,6 +34,12 @@
 		</div>
 
 		<div>
+			<?= form_label( 'Is active?', 'is_active' ); ?>
+			<?= form_hidden('is_active', false) ?>
+			<?= form_checkbox('is_active', true , true, ['id' => 'is_active']); ?>
+		</div>
+
+		<div>
 			<?= form_submit('save', 'Save'); ?>
 			<a href="<?= site_url('/admin/users') ?>" class="cancel">Cancel</a>
 		</div>

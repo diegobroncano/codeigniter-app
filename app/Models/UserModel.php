@@ -15,7 +15,7 @@ class UserModel extends \CodeIgniter\Model
 
 	protected $returnType = 'App\Entities\User';
 
-	protected $allowedFields = ['email', 'name', 'password', 'last_name', 'role', 'activation_hash'];
+	protected $allowedFields = ['email', 'name', 'password', 'last_name', 'role', 'activation_hash', 'is_active'];
 
 	protected $useTimestamps = true;
 
@@ -44,8 +44,8 @@ class UserModel extends \CodeIgniter\Model
 		]
 	];
 
-	protected $beforeInsert = ['hashPassword', 'checkRole'];
-	protected $beforeUpdate = ['hashPassword', 'checkRole'];
+	protected $beforeInsert = ['hashPassword', 'checkRole', 'checkIsActive'];
+	protected $beforeUpdate = ['hashPassword', 'checkRole', 'checkIsActive'];
 
 	protected function hashPassword(array $data): array
 	{
@@ -84,6 +84,24 @@ class UserModel extends \CodeIgniter\Model
 				unset($data['data']['role']);
 
 			}
+
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Check if user can modify activation status.
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	protected function checkIsActive(array $data): array
+	{
+		if ( isset($data['data']['is_active']) && !service('auth')->currentAdmin() ) {
+
+			unset($data['data']['is_active']);
 
 		}
 

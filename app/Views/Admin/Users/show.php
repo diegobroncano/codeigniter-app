@@ -25,6 +25,9 @@
 		<dt>User role</dt>
 		<dd><?= esc($user->role); ?></dd>
 
+		<dt>Is active?</dt>
+		<dd><?= $user->is_active ? 'yes' : 'no'; ?></dd>
+
 		<dt>Created at</dt>
 		<dd><?= $user->created_at; ?></dd>
 
@@ -67,6 +70,20 @@
 			}
 			?>
 			<?= form_dropdown('role', user_roles(), $user->role, $role_dropdown_atts); ?>
+		</div>
+
+		<div>
+			<?= form_label( 'Is active?', 'is_active' ); ?>
+
+			<?php // Add disabled attribute if editing its own user and echo out active hidden field if not.
+			$active_checkbox_atts = ['id' => 'role'];
+			if ( current_user()->id === $user->id ) {
+				$active_checkbox_atts['disabled'] = 'disabled';
+			} else {
+				echo form_hidden('is_active', false);
+			}
+			?>
+			<?= form_checkbox('is_active', true , $user->is_active,$active_checkbox_atts); ?>
 		</div>
 
 		<div>
