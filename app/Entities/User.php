@@ -14,7 +14,7 @@ class User extends \CodeIgniter\Entity\Entity
 
 	public function startActivation()
 	{
-		$token = bin2hex( random_bytes(16) );
-		$this->activation_hash = hash_hmac( 'sha256', $token, getenv('encryption.verificationKey') );
+		$this->token = bin2hex( random_bytes(16) );
+		$this->activation_hash = hash_hmac( 'sha256', $this->token, getenv('encryption.verificationKey') );
 	}
 }
