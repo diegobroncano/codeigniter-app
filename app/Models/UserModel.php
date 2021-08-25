@@ -111,4 +111,26 @@ class UserModel extends \CodeIgniter\Model
 		// Return query result
 		return $return;
 	}
+
+	/**
+	 * Activate an account by its token.
+	 *
+	 * @param string $token Activation token
+	 *
+	 * @return bool
+	 */
+	public function activateByToken(string $token): bool
+	{
+		$token_hash = hash_hmac( 'sha256', $token, getenv('encryption.verificationKey') );
+
+		$user = $this->where('activation_hash', $token_hash)
+			->first();
+
+		if ($user) {
+			$user->activate();
+			return $this->protect(false)
+				->save($user);
+		}
+		return false;
+	}
 }

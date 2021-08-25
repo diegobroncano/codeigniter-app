@@ -35,6 +35,19 @@ class Signup extends BaseController
 
 	}
 
+	public function activate($token)
+	{
+		$model = new UserModel();
+
+		if ( $model->activateByToken($token) ) {
+			return redirect()->to('/')
+				->with('success', 'Account activated successfully! Now, you can log in.');
+		} else {
+			return redirect()->to('/')
+				->with('error', 'That activation token is not valid.');
+		}
+	}
+
 	/**
 	 * Send an activation token to its user
 	 *
