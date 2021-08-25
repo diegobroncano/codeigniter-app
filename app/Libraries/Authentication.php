@@ -7,7 +7,7 @@ use App\Models\UserModel;
 
 class Authentication
 {
-	private object $user;
+	private ?object $user = null;
 
 	private array $roles;
 
@@ -68,13 +68,20 @@ class Authentication
 	 */
 	public function getCurrentUser(): ?object
 	{
-		if ( !$this->isLoggedIn() ) {
+		if ( !session()->has('user_id') ) {
 			return null;
 		}
 
 		if ( !isset($this->user) ) {
+
 			$model = new UserModel();
-			$this->user = $model->find( session()->get('user_id') );
+			$user = $model->find( session()->get('user_id') );
+
+			// Check if user is active to save it.
+			if ($user && $user->is_active) {
+				$this->user = $user;
+			}
+
 		}
 
 		return $this->user;
@@ -82,7 +89,7 @@ class Authentication
 
 	public function isLoggedIn(): bool
 	{
-		return session()->has('user_id');
+		return !is_null( $this->getCurrentUser() );
 	}
 
 	/**
