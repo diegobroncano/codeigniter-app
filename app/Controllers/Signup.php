@@ -37,9 +37,7 @@ class Signup extends BaseController
 
 	public function activate($token)
 	{
-		$model = new UserModel();
-
-		if ( $model->activateByToken($token) ) {
+		if ( service('auth')->activateByToken($token) ) {
 			return redirect()->to('/')
 				->with('success', 'Account activated successfully! Now, you can log in.');
 		} else {

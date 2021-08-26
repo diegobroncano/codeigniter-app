@@ -109,4 +109,27 @@ class Authentication
 	{
 		return $this->roles;
 	}
+
+	/**
+	 * Activate an account by its token.
+	 *
+	 * @param string $token Activation token
+	 *
+	 * @return bool
+	 */
+	public function activateByToken(string $token): bool
+	{
+		$token_hash = hash_hmac( 'sha256', $token, getenv('encryption.verificationKey') );
+
+		$model = new UserModel();
+		$user = $model->where('activation_hash', $token_hash)
+			->first();
+
+		if ($user) {
+			$user->activate();
+			return $model->protect(false)
+				->save($user);
+		}
+		return false;
+	}
 }
