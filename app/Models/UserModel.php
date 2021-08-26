@@ -44,8 +44,8 @@ class UserModel extends \CodeIgniter\Model
 		]
 	];
 
-	protected $beforeInsert = ['hashPassword', 'checkRole', 'checkIsActive'];
-	protected $beforeUpdate = ['hashPassword', 'checkRole', 'checkIsActive'];
+	protected $beforeInsert = ['hashPassword', 'checkRole'];
+	protected $beforeUpdate = ['hashPassword', 'checkRole'];
 
 	protected function hashPassword(array $data): array
 	{
@@ -90,24 +90,6 @@ class UserModel extends \CodeIgniter\Model
 		return $data;
 	}
 
-	/**
-	 * Check if user can modify activation status.
-	 *
-	 * @param array $data
-	 *
-	 * @return array
-	 */
-	protected function checkIsActive(array $data): array
-	{
-		if ( isset($data['data']['is_active']) && !service('auth')->currentAdmin() ) {
-
-			unset($data['data']['is_active']);
-
-		}
-
-		return $data;
-	}
-
 	public function findByEmail(string $email): ?object
 	{
 		return $this->where('email', $email)
@@ -120,35 +102,19 @@ class UserModel extends \CodeIgniter\Model
 		$previous_rules = $this->validationRules;
 		unset($this->validationRules['password']);
 
-		// Execute update
-		$return = $this->save($user);
+		// Execute unprotected update if user is admin
+		if ( service('auth')->currentAdmin() ) {
+			unset($user->save);
+			$return = $this->protect(false)
+				->save($user);
+		} else {
+			$return = $this->save($user);
+		}
 
 		// Recover password validation
 		$this->validationRules = $previous_rules;
 
 		// Return query result
 		return $return;
-	}
-
-	/**
-	 * Activate an account by its token.
-	 *
-	 * @param string $token Activation token
-	 *
-	 * @return bool
-	 */
-	public function activateByToken(string $token): bool
-	{
-		$token_hash = hash_hmac( 'sha256', $token, getenv('encryption.verificationKey') );
-
-		$user = $this->where('activation_hash', $token_hash)
-			->first();
-
-		if ($user) {
-			$user->activate();
-			return $this->protect(false)
-				->save($user);
-		}
-		return false;
 	}
 }
