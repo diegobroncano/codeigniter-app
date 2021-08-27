@@ -74,7 +74,8 @@ class Filters extends BaseConfig
 		]],
 		'guest'	=> ['before' => [
 			'login(/*)?',
-			'signup(/*)?'
+			'signup(/*)?',
+			'password(/*)?'
 		]]
 	];
 }
