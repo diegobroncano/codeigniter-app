@@ -15,7 +15,7 @@ class UserModel extends \CodeIgniter\Model
 
 	protected $returnType = 'App\Entities\User';
 
-	protected $allowedFields = ['email', 'name', 'password', 'last_name', 'role', 'activation_hash', 'is_active'];
+	protected $allowedFields = ['email', 'name', 'password', 'last_name', 'role', 'activation_hash'];
 
 	protected $useTimestamps = true;
 

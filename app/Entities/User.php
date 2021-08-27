@@ -30,4 +30,17 @@ class User extends \CodeIgniter\Entity\Entity
 		$this->is_active = true;
 		$this->activation_hash = null;
 	}
+
+	/**
+	 * Set user password reset hash and expire time.
+	 */
+	public function startPasswordReset(): Token
+	{
+		$token = new Token;
+
+		$this->reset_hash = $token->getHash();
+		$this->reset_expires_at = date( 'Y-m-d H:i:s', time() + 7200 ); // Expire in 2 hours
+
+		return $token;
+	}
 }

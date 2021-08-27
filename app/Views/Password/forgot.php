@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 
-	<?= form_open( '/password/reset'); ?>
+	<?= form_open( '/password/processforgot'); ?>
 
 		<div>
 			<?= form_label('Email', 'email'); ?>
