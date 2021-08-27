@@ -22,7 +22,7 @@ class Login extends BaseController
 					->with('success', ["Welcome " . current_user()->name]);
 		} else {
 
-			if ( !session()->getFlashdata('account_activated') ) {
+			if ( session()->getFlashdata('account_activated') === false ) {
 				return redirect()->to('/login')
 				->with('error', ['Your account is not activated, please check your inbox.'])
 				->withInput();
