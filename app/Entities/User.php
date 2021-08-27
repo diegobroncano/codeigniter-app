@@ -43,4 +43,13 @@ class User extends \CodeIgniter\Entity\Entity
 
 		return $token;
 	}
+
+	/**
+	 * Remove user password reset hash and expire time.
+	 */
+	public function endPasswordReset()
+	{
+		$this->reset_hash = null;
+		$this->reset_expires_at = null;
+	}
 }

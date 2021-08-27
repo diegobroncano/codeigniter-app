@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\User;
 use App\Models\UserModel;
+use CodeIgniter\HTTP\RedirectResponse;
 
 class Password extends BaseController
 {
@@ -33,6 +34,48 @@ class Password extends BaseController
 		}
 	}
 
+	public function reset($token)
+	{
+		$model = new UserModel();
+		$user = $model->findByResetToken($token);
+
+		if ($user) {
+			return view('Password/reset', ['token' => $token]);
+		} else {
+			return redirect()->to('/password/forgot')
+				->with('errors11', 'Invalid or expired token.');
+		}
+	}
+
+	public function processReset($token): RedirectResponse
+	{
+		$model = new UserModel();
+		$user = $model->findByResetToken($token);
+
+		if ($user) {
+
+			$user->fill( $this->request->getPost() );
+
+			if ( $model->save($user) ) {
+
+				$user->endPasswordReset();
+				$model->protect(false)->save($user);
+
+				return redirect()->to('/login')
+					->with('success', 'Your password has been reset.');
+
+			} else {
+
+				return redirect()->back()
+					->with( 'error', $model->errors() );
+
+			}
+
+		} else {
+			return redirect()->to('/password/forgot')
+				->with('error', 'Invalid or expired token.');
+		}
+	}
 
 	/**
 	 * Send a password reset token to its user

@@ -118,6 +118,19 @@ class UserModel extends \CodeIgniter\Model
 			->first();
 	}
 
+	public function findByResetToken(string $token): ?object
+	{
+		$token = new Token($token);
+
+		$user = $this->where( 'reset_hash', $token->getHash() )
+			->first();
+
+		if ( $user && strtotime($user->reset_expires_at) > time() ) {
+			return $user;
+		}
+		return null;
+	}
+
 	public function updateWithoutPassword(User $user): bool
 	{
 		// Remove password validation
