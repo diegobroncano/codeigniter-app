@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Entities\User;
+use App\Libraries\Token;
 
 class UserModel extends \CodeIgniter\Model
 {
@@ -44,8 +45,8 @@ class UserModel extends \CodeIgniter\Model
 		]
 	];
 
-	protected $beforeInsert = ['hashPassword', 'checkRole'];
-	protected $beforeUpdate = ['hashPassword', 'checkRole'];
+	protected $beforeInsert = ['hashPassword', 'checkRole', 'cleanFields'];
+	protected $beforeUpdate = ['hashPassword', 'checkRole', 'cleanFields'];
 
 	protected function hashPassword(array $data): array
 	{
@@ -85,6 +86,27 @@ class UserModel extends \CodeIgniter\Model
 
 			}
 
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Prevent mysqli exceptions, cleaning data that cannot be recorded in the db.
+	 * Checks every data provided and compare to column names.
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	protected function cleanFields(array $data): array
+	{
+		$fields = $this->db->getFieldNames('users');
+
+		foreach ($data['data'] as $data_key => $new_data) {
+			if ( !in_array( $data_key, $fields ) ) {
+				unset($data['data'][$data_key]);
+			}
 		}
 
 		return $data;
