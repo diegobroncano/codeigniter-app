@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Libraries\Token;
+
 /**
  * @property string password_hash User password hash
  */
@@ -14,8 +16,9 @@ class User extends \CodeIgniter\Entity\Entity
 
 	public function startActivation()
 	{
-		$this->token = bin2hex( random_bytes(16) );
-		$this->activation_hash = hash_hmac( 'sha256', $this->token, getenv('encryption.verificationKey') );
+		$token = new Token;
+		$this->token = $token->getValue();
+		$this->activation_hash = $token->getHash();
 	}
 
 	/**

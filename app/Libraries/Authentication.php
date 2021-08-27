@@ -119,7 +119,8 @@ class Authentication
 	 */
 	public function activateByToken(string $token): bool
 	{
-		$token_hash = hash_hmac( 'sha256', $token, getenv('encryption.verificationKey') );
+		$token = new Token($token);
+		$token_hash = $token->getHash();
 
 		$model = new UserModel();
 		$user = $model->where('activation_hash', $token_hash)
