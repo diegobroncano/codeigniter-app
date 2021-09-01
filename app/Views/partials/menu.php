@@ -2,6 +2,7 @@
 	<ul>
 		<?php if ( current_user() ): ?>
 		<li><a href="<?= site_url('/tasks'); ?>">Tasks</a></li>
+		<li><a href="<?= site_url('/profile'); ?>">Profile</a></li>
 		<li><a href="<?= site_url('/logout'); ?>">Log out</a></li>
 			<?php if ( current_admin() ): ?>
 			<li><a href="<?= site_url('/admin/users') ?>">Users management</a></li>
