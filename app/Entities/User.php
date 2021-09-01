@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Libraries\Token;
+
 /**
  * @property string password_hash User password hash
  */
@@ -14,8 +16,9 @@ class User extends \CodeIgniter\Entity\Entity
 
 	public function startActivation()
 	{
-		$this->token = bin2hex( random_bytes(16) );
-		$this->activation_hash = hash_hmac( 'sha256', $this->token, getenv('encryption.verificationKey') );
+		$token = new Token;
+		$this->token = $token->getValue();
+		$this->activation_hash = $token->getHash();
 	}
 
 	/**
@@ -26,5 +29,27 @@ class User extends \CodeIgniter\Entity\Entity
 	{
 		$this->is_active = true;
 		$this->activation_hash = null;
+	}
+
+	/**
+	 * Set user password reset hash and expire time.
+	 */
+	public function startPasswordReset(): Token
+	{
+		$token = new Token;
+
+		$this->reset_hash = $token->getHash();
+		$this->reset_expires_at = date( 'Y-m-d H:i:s', time() + 7200 ); // Expire in 2 hours
+
+		return $token;
+	}
+
+	/**
+	 * Remove user password reset hash and expire time.
+	 */
+	public function endPasswordReset()
+	{
+		$this->reset_hash = null;
+		$this->reset_expires_at = null;
 	}
 }

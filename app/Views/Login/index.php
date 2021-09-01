@@ -25,4 +25,6 @@
 
 	<?= form_close(); ?>
 
+	<p><a href="<?= site_url('/password/forgot'); ?>">Forgot password?</a></p>
+
 <?= $this->endSection(); ?>
