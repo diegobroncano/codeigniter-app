@@ -10,6 +10,8 @@ class Profile extends BaseController
 	protected User $user;
 	protected UserModel $model;
 
+	protected array $allowed_image = ['image/png', 'image/jpeg'];
+
 	public function __construct()
 	{
 		$this->user = service('auth')->getCurrentUser();
@@ -62,5 +64,36 @@ class Profile extends BaseController
 	public function image()
 	{
 		return view('Profile/image');
+	}
+
+	public function updateImage()
+	{
+		$file = $this->request->getFile('image');
+
+		if ( !$file->isValid() ) {
+
+			if ( $file->getError() == UPLOAD_ERR_NO_FILE ) {
+				return redirect()->to('/profile/image')
+					->with('warning', 'No file uploaded.');
+			}
+
+			throw new \RuntimeException(
+				$file->getErrorString().' '.$file->getError()
+			);
+		}
+
+		if ( $file->getSizeByUnit('mb') > 2) {
+			return redirect()->to('/profile/image')
+				->with('error', 'File too large (max 2MB)');
+		}
+
+		if ( !in_array( $file->getMimeType(), $this->allowed_image ) ) {
+			return redirect()->to('/profile/image')
+				->with('error', 'File not allowed, only PNGs and JPEGs.');
+		}
+
+		$path = $file->store('profile_images');
+
+		dd($path);
 	}
 }
