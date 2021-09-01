@@ -67,15 +67,15 @@ class Filters extends BaseConfig
 	public $filters = [
 		'login'	=> ['before' => [
 			'tasks(/*)?',
-			'admin(/*)?'
+			'admin(/*)?',
+			'profile(/*)?'
 		]],
 		'admin'	=> ['before' => [
 			'admin(/*)?'
 		]],
 		'guest'	=> ['before' => [
 			'login(/*)?',
-			'signup(/*)?',
-			'password(/*)?'
+			'signup(/*)?'
 		]]
 	];
 }
