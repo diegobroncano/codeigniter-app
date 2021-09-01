@@ -18,6 +18,8 @@
 		<dd><?= esc($user->last_name); ?></dd>
 	</dl>
 
+	<a href="<?= site_url('/profile/image') ?>" class="cancel">Update image</a>
+
 	<h2>Update information:</h2>
 
 	<?= form_open('/profile/update/'.$user->id, ['class' => 'update-profile']) ?>

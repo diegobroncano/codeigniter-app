@@ -58,4 +58,9 @@ class Profile extends BaseController
 				->with( 'error', $this->model->errors() );
 		}
 	}
+
+	public function image()
+	{
+		return view('Profile/image');
+	}
 }
