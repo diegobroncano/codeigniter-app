@@ -48,6 +48,11 @@
 	<?= form_open('/profile/updatepassword/'.$user->id, ['class' => 'update-password-form']) ?>
 
 		<div>
+			<?= form_label('Current password', 'curr_pass'); ?>
+			<?= form_input('curr_pass', extra:['id' => 'curr_pass'], type:'password'); ?>
+		</div>
+
+		<div>
 			<?= form_label('New password', 'password'); ?>
 			<?= form_input('password', extra:['id' => 'password'], type:'password'); ?>
 		</div>

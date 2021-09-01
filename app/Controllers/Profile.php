@@ -42,6 +42,12 @@ class Profile extends BaseController
 
 	public function updatePassword()
 	{
+		if ( !$this->user->verifyPassword( $this->request->getPost('curr_pass') ) ) {
+			return redirect()->to('/profile')
+				->with('error', 'Incorrect current password.');
+		}
+
+
 		$this->user->fill( $this->request->getPost() );
 
 		if ( $this->model->save($this->user) ) {
@@ -49,8 +55,7 @@ class Profile extends BaseController
 				->with('success', 'Password updated.');
 		} else {
 			return redirect()->to('/profile')
-				->with( 'error', $this->model->errors() )
-				->withInput();
+				->with( 'error', $this->model->errors() );
 		}
 	}
 }
