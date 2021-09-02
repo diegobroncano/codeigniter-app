@@ -12,6 +12,9 @@
 <?php else: ?>
 	<img src="<?= site_url('/images/blank_avatar.png'); ?>" height="200" width="200" alt="Profile image">
 <?php endif; ?>
+<a href="<?= site_url('/profile/image') ?>">Update image</a>
+<a href="<?= site_url('/profile/deleteimage') ?>">Delete image</a>
+
 	<dl>
 		<dt>Email</dt>
 		<dd><?= esc($user->email); ?></dd>
@@ -22,8 +25,6 @@
 		<dt>Last name</dt>
 		<dd><?= esc($user->last_name); ?></dd>
 	</dl>
-
-	<a href="<?= site_url('/profile/image') ?>" class="cancel">Update image</a>
 
 	<h2>Update information:</h2>
 

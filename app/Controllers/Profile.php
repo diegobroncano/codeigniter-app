@@ -131,4 +131,25 @@ class Profile extends BaseController
 			exit();
 		}
 	}
+
+	public function deleteImage()
+	{
+		$user = service('auth')->getCurrentUser();
+
+		// Remove from database
+		$avatar = $user->profile_image;
+		if ($avatar) {
+			$user->profile_image = null;
+			$this->model->protect(false)->save($user);
+		}
+
+		// Remove image file
+		$path = WRITEPATH . 'uploads/profile_images/' . $avatar;
+		if ( is_file($path) ) {
+			unlink($path);
+		}
+
+		return redirect()->back()
+			->with('success', 'Avatar deleted.');
+	}
 }
