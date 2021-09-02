@@ -68,8 +68,10 @@ class Profile extends BaseController
 
 	public function updateImage()
 	{
+		// Get image
 		$file = $this->request->getFile('image');
 
+		// Check if image is OK
 		if ( !$file->isValid() ) {
 
 			if ( $file->getError() == UPLOAD_ERR_NO_FILE ) {
@@ -82,25 +84,34 @@ class Profile extends BaseController
 			);
 		}
 
+		// Check image size
 		if ( $file->getSizeByUnit('mb') > 2) {
 			return redirect()->to('/profile/image')
 				->with('error', 'File too large (max 2MB)');
 		}
 
+		// Check image type
 		if ( !in_array( $file->getMimeType(), $this->allowed_image ) ) {
 			return redirect()->to('/profile/image')
 				->with('error', 'File not allowed, only PNGs and JPEGs.');
 		}
 
+		// Save image
 		$path = $file->store('profile_images');
-
 		$path = WRITEPATH.'uploads/'.$path;
 
+		// Crop image
 		service('image')
 			->withFile($path)
 			->fit(200, 200, 'center')
 			->save($path);
 
-		dd($path);
+		// Save image name into user record
+		$user = service('auth')->getCurrentUser();
+		$user->profile_image = $file->getName();
+		$this->model->protect(false)->save($user);
+
+		return redirect()->to('/profile')
+			->with('success', 'Avatar updated successfully.');
 	}
 }
