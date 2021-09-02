@@ -7,6 +7,11 @@
 
 <?= $this->section('content'); ?>
 
+<?php if ( current_user()->profile_image ): ?>
+	<img src="<?= site_url('/profile/avatar'); ?>" height="200" width="200" alt="Profile image">
+<?php else: ?>
+	<img src="<?= site_url('/images/blank_avatar.png'); ?>" height="200" width="200" alt="Profile image">
+<?php endif; ?>
 	<dl>
 		<dt>Email</dt>
 		<dd><?= esc($user->email); ?></dd>

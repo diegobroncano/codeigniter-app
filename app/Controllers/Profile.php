@@ -114,4 +114,21 @@ class Profile extends BaseController
 		return redirect()->to('/profile')
 			->with('success', 'Avatar updated successfully.');
 	}
+
+	public function avatar()
+	{
+		if ($this->user->profile_image) {
+			$path = WRITEPATH . 'uploads/profile_images/' . $this->user->profile_image;
+
+			$file_info = new \finfo(FILEINFO_MIME);
+			$type = $file_info->file($path);
+
+
+			header("Content-Type: $type");
+			header( "Content-Length: ". filesize($path) );
+
+			readfile($path);
+			exit();
+		}
+	}
 }
